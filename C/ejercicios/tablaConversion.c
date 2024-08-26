@@ -3,21 +3,17 @@
 int main() {
     int valorCM, valorMt, valorKm;
 
-    // Leer el valor en centímetros y convertir a metros
     printf("Ingrese el valor en cm: ");
     scanf("%d", &valorCM);
     
-    // Leer el valor en metros y convertir a centímetros y kilómetros
     printf("Ingrese el valor en m: ");
     scanf("%d", &valorMt);
-    int conversionMtToCm = valorMt * 100;      // Convertir a centímetros
+    int conversionMtToCm = valorMt * 100;     
     
-    // Leer el valor en kilómetros y convertir a metros
     printf("Ingrese el valor en km: ");
     scanf("%d", &valorKm);
-    int conversionKmToMt = valorKm * 1000;     // Convertir a metros
+    int conversionKmToMt = valorKm * 1000;   
 
-    // Mostrar resultados
     printf("---------------------------------------------------------------------------------------------------|\n");
     printf("|\tVALOR\t\t|\tCONVERSIÓN\t|\tCm\t|\tMt\t|\tKm\t\n");
     
