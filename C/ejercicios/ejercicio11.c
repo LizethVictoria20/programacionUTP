@@ -33,6 +33,8 @@ int main()
   printf(TEXT_COLOR(52, 126, 184) "13) Mostrar si un número es primo \n" RESET);
   printf(TEXT_COLOR(124, 41, 175) "14) Mostrar serie Fibonacci \n" RESET);
   printf(TEXT_COLOR(41, 160, 175) "15) Mostrar la descomposición de un número \n" RESET);
+  printf(TEXT_COLOR(52, 126, 184) "16) Mostrar en número mayor \n" RESET);
+
 
   printf("Por favor ingrese una opción: ");
   scanf("%i", &opc);
@@ -378,13 +380,25 @@ int main()
   break;
   case 16:
   {
-    int num;
-    int aux = 0;
-    printf("Ingrese un número entero: ");
+    int n, i = 1, num, max;
+    printf("Ingrese la cantidad de números: ");
+    scanf("%d", &n);
+
+    printf("Ingrese un número: ");
     scanf("%d", &num);
-    while(num > aux){
-      aux = num;
+    max = num;
+
+    while (i < n)
+    {
+      printf("Ingrese un número: ");
+      scanf("%d", &num);
+      if (num > max)
+      {
+        max = num;
+      }
+      i++;
     }
+    printf("El número mayor es: %d\n", max);
   }
   break;
   default:
