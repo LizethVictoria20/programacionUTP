@@ -26,7 +26,7 @@ void login()
   printf("-> Ingrese la contraseña: ");
   scanf("%s", logpwd);
 
-  pf = fopen("login.txt", "r");
+  pf = fopen("credentials.txt", "r");
 
   fscanf(pf, "%s", user);
   fscanf(pf, "%s", pwd);
