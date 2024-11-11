@@ -402,7 +402,7 @@ int main()
   }
   break;
   default:
-    printf("ERROR! Ingrese una opcion del 1 al 15\n");
+    printf("ERROR! Ingrese una opcion del 1 al 16\n");
   }
 
   return main();
