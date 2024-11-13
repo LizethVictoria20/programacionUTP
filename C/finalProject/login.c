@@ -1,19 +1,45 @@
 #include <stdio.h>
 #include <string.h>
+#include "functions.h"
 
-void menuGeneral() {
-    printf("Menu\n");
+
+
+void menuGeneral()
+{
+  printf("Menu\n");
 }
 
-void menuEst() {
-    printf("Estudiante\n");
+void menuEst()
+{
+  printf("Estudiante\n");
 }
 
-void menuDoc() {
-    printf("Docente\n");
+void menuDoc()
+{
+  int opcion;
+  printf("\nMenú Profesor\n");
+  printf("\n");
+  printf("1. Crear Asignatura\n");
+  printf("2. Salir\n");
+  printf("\n");
+  printf("Seleccione una opción: ");
+  scanf("%d", &opcion);
+
+  switch (opcion)
+  {
+  case 1:
+    crearAsignatura();
+    break;
+  case 2:
+    printf("Cerrando sesión...\n");
+    break;
+  default:
+    printf("Opción inválida.\n");
+  }
 }
 
-void login() {
+void login()
+{
   FILE *accesoDoc;
   FILE *accesoEst;
   char user[10], pwd[10], logUser[10], logpwd[10];
@@ -29,37 +55,47 @@ void login() {
   printf("-> Ingrese la contraseña: ");
   scanf("%s", logpwd);
 
-  accesoDoc = fopen("credentialsDoc.txt", "r");
+  accesoDoc = fopen("./archivos/credentialsDoc.txt", "r");
   fscanf(accesoDoc, "%s", user);
   fscanf(accesoDoc, "%s", pwd);
-  if (strcmp(logUser, user) == 0 && strcmp(logpwd, pwd) == 0) {
-      isDocente = 1;
+  if (strcmp(logUser, user) == 0 && strcmp(logpwd, pwd) == 0)
+  {
+    isDocente = 1;
   }
   fclose(accesoDoc);
-  
 
-  if (isDocente == -1) {
-    accesoEst = fopen("credentialsEst.txt", "r");
+  if (isDocente == -1)
+  {
+    accesoEst = fopen("./archivos/credentialsEst.txt", "r");
     fscanf(accesoEst, "%s", user);
     fscanf(accesoEst, "%s", pwd);
-    if (strcmp(logUser, user) == 0 && strcmp(logpwd, pwd) == 0) {
-        isDocente = 0;
+    if (strcmp(logUser, user) == 0 && strcmp(logpwd, pwd) == 0)
+    {
+      isDocente = 0;
     }
     fclose(accesoEst);
   }
 
-  if (isDocente == 1) {
+  if (isDocente == 1)
+  {
     menuDoc();
-  } else if (isDocente == 0) {
+  }
+  else if (isDocente == 0)
+  {
     menuEst();
-  } else {
+  }
+  else
+  {
     printf("Error: Usuario o contraseña incorrecta\n");
     printf("¿Desea intentar de nuevo? (s/n): ");
     fflush(stdin);
     scanf("%c", &sino);
-    if (sino == 's' || sino == 'S') {
+    if (sino == 's' || sino == 'S')
+    {
       login();
-    } else {
+    }
+    else
+    {
       printf("Bye!!!\n");
     }
   }

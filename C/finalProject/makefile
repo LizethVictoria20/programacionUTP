@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -g
 DEPS = functions.h
-OBJ = main.o login.o
+OBJ = main.o login.o crearAsignatura.o
 
 %.o: %.c $(DEPS)
 	$(CC) $(CFLAGS) -c -o $@ $<
