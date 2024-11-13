@@ -9,5 +9,5 @@ struct asignatura {
 
 void login();
 void crearAsignatura();
-
+void leerAsignaturas();
 #endif
