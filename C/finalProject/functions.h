@@ -1,5 +1,6 @@
-#ifndef LOGIN_H
-#define LOGIN_H
+// functions.h
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
 void login();
 
