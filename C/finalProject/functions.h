@@ -8,6 +8,9 @@ struct asignatura {
 };
 
 void login();
+void menuGeneral();
+void menuEst();
+void menuDoc();
 void crearAsignatura();
 void leerAsignaturas();
 #endif

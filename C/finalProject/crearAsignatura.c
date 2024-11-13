@@ -31,9 +31,15 @@ void leerAsignaturas() {
     }
 
     printf("Asignaturas guardadas:\n");
+    printf("+----+------------------------------+\n");
+    printf("| ID \t | Nombre                       |\n");
+    printf("+----+------------------------------+\n");
+
     while (fread(&asignatura_leida, sizeof(struct asignatura), 1, file)) {
-        printf("ID: %d, Nombre: %s\n", asignatura_leida.id, asignatura_leida.nombre);
+        printf("| %d \t | %s |\n", asignatura_leida.id, asignatura_leida.nombre);
     }
+
+    printf("+----+------------------------------+\n");
 
     fclose(file);
 }
