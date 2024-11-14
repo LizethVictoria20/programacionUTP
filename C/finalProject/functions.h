@@ -4,7 +4,7 @@
 
 struct asignatura {
     int id;
-    char nombre[50];
+    char nombre[100];
 };
 
 struct alumno {

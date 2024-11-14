@@ -17,8 +17,7 @@ void menuDoc()
   int opcion;
   printf("\nMenú Profesor\n");
   printf("\n");
-  printf("1. Crear Asignatura\n");
-  printf("2. Ver Asignaturas\n");
+  printf("1. Ver Asignaturas\n");
   printf("3. Crear Alumno\n");
   printf("4. Ver Alumnos\n");
   printf("5. Agregar Nota\n");
@@ -30,11 +29,8 @@ void menuDoc()
   switch (opcion)
   {
   case 1:
-    crearAsignatura();
-    menuDoc();
-    break;
-  case 2:
     leerAsignaturas();
+    printf("Ingrese la materia:");
     menuDoc();
     break;
   case 3:
