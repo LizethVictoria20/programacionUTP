@@ -1,23 +1,30 @@
-// functions.h
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+#ifndef MENUS_H
+#define MENUS_H
 
-struct asignatura {
-    int id;
-    char nombre[100];
-};
-
-struct alumno {
-  int id;
-  char nombre[50];
-};
-
-void login();
-void menuGeneral();
-void menuEst();
-void menuDoc();
+// Declaraciones de las funciones de los menús
+// Declaración de funciones
+void menus();
+void crearPerfilProfesor();
+void editarProfesor();
+void eliminarProfesor();
+void listarProfesores();
 void crearAsignatura();
-void leerAsignaturas();
-void crearAlumno();
-void leerAlumnos();
-#endif
+void editarAsignatura();
+void eliminarAsignatura();
+void listarAsignaturas();
+void asignarMateriaProfesor();
+void eliminarAsignacionProfesor();
+void listarAsignaturaProfesor();
+void crearPerfilEstudiante();
+void editarEstudiante();
+void eliminarEstudiante();
+void listarEstudiantes();
+void asignarMateriaEstudiante();
+void eliminarAsignacionEstudiante();
+void listarAsignaturaEstudiante();
+
+void menuAdministrador();
+void menuDocente();
+void menuEstudiante();
+
+#endif // MENUS_H
