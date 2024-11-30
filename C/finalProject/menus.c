@@ -49,7 +49,8 @@ void menuAdministrador()
     printf("4. Crear perfil del estudiante\n");
     printf("5. Asignar materia al estudiante\n");
     printf("6. Listar profesores\n");
-    printf("7. Volver\n");
+    printf("7. Listar asignaturas\n");
+    printf("8. Volver\n");
     printf("Seleccione una opción: ");
     scanf("%d", &opcion);
 
@@ -74,6 +75,9 @@ void menuAdministrador()
       listarProfesores();
       break;
     case 7:
+      listarAsignaturas();
+      break;
+    case 8:
       printf("Volviendo al menú principal...\n");
       break;
     default:

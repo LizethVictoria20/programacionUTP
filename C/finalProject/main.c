@@ -28,7 +28,7 @@ typedef struct
   char nombre[50];
   int creditos;
   char docenteCedula[15];
-} Materia;
+} Asignatura;
 
 // Estructura para Nota
 typedef struct
@@ -38,13 +38,10 @@ typedef struct
   float nota;
 } Nota;
 
-
-
 int main()
 {
- menus();
+  menus();
 }
-
 
 // Funciones de ejemplo
 void crearPerfilProfesor()
@@ -126,7 +123,36 @@ void listarProfesores()
 }
 void crearAsignatura()
 {
-  printf("Función para crear asignatura.\n");
+  Asignatura asignatura;
+  FILE *archivo;
+
+  // Solicitar los datos de la asignatura
+  printf("\n=== Crear Perfil de la Asignatura ===\n");
+  printf("Ingrese el código de la asignatura: ");
+  scanf("%s", asignatura.codigo);
+  getchar();
+  printf("Ingrese el nombre de la asignatura: ");
+  fgets(asignatura.nombre, 50, stdin);
+  asignatura.nombre[strcspn(asignatura.nombre, "\n")] = '\0';
+  printf("Ingrese el número de créditos: ");
+  scanf("%d", &asignatura.creditos);
+  printf("Ingrese la cédula del docente asignado: ");
+  scanf("%s", asignatura.docenteCedula);
+
+  archivo = fopen("/archivos/asignaturas.txt", "a");
+  if (archivo == NULL)
+  {
+    printf("Error al abrir el archivo.\n");
+    return;
+  }
+
+  // Escribir los datos de la asignatura en el archivo
+  fprintf(archivo, "%s|%s|%d|%s\n", asignatura.codigo, asignatura.nombre, asignatura.creditos, asignatura.docenteCedula);
+
+  // Cerrar el archivo
+  fclose(archivo);
+
+  printf("Asignatura creada y guardada exitosamente.\n");
 }
 void editarAsignatura()
 {
@@ -138,7 +164,35 @@ void eliminarAsignatura()
 }
 void listarAsignaturas()
 {
-  printf("Función para listar asignaturas.\n");
+  FILE *archivo;
+  char linea[200];
+
+
+  archivo = fopen("/archivos/asignaturas.txt", "r");
+  if (archivo == NULL)
+  {
+    printf("No se pudo abrir el archivo 'asignaturas.txt' o no existen asignaturas registradas.\n");
+    return;
+  }
+
+  printf("\n=== Lista de Asignaturas ===\n");
+
+  while (fgets(linea, sizeof(linea), archivo) != NULL)
+  {
+    char codigo[10], nombre[50], docenteCedula[15];
+    int creditos;
+
+    sscanf(linea, "%[^|]|%[^|]|%d|%[^\n]", codigo, nombre, &creditos, docenteCedula);
+
+    printf("Código: %s\n", codigo);
+    printf("Nombre: %s\n", nombre);
+    printf("Créditos: %d\n", creditos);
+    printf("Cédula del Docente: %s\n", docenteCedula);
+    printf("---------------------------\n");
+  }
+
+  // Cerrar el archivo
+  fclose(archivo);
 }
 void asignarMateriaProfesor()
 {
