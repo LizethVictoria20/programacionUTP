@@ -21,7 +21,7 @@ void crearPerfilProfesor()
 
     printf("\n=== Crear Perfil del Profesor ===\n");
     printf("Ingrese la cédula: ");
-    scanf("%s", profesor.cedula);
+    scanf("%d", &profesor.cedula);
     limpiarBuffer();
     printf("Ingrese el nombre: ");
     fgets(profesor.nombre, 50, stdin);
@@ -39,7 +39,7 @@ void crearPerfilProfesor()
         return;
     }
 
-    fprintf(archivo, "%s|%s|%s|%s\n", profesor.cedula, profesor.nombre, profesor.especialidad, profesor.correo);
+    fprintf(archivo, "%d|%s|%s|%s\n", profesor.cedula, profesor.nombre, profesor.especialidad, profesor.correo);
 
     fclose(archivo);
 

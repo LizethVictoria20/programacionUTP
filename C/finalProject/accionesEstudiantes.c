@@ -21,7 +21,7 @@ void crearPerfilEstudiante()
   scanf("%d", &alumno.edad);
   getchar(); // Consumir el salto de línea restante
   printf("Ingrese el correo: ");
-  scanf("%s", &alumno.correo);
+  scanf("%s", alumno.correo);
 
   // Abrir el archivo en modo "a" (adición) para agregar nuevos estudiantes
   archivo = fopen("archivos/estudiantes.txt", "a");
@@ -32,7 +32,7 @@ void crearPerfilEstudiante()
   }
 
   // Escribir los datos del estudiante en el archivo
-  fprintf(archivo, "%s|%s|%s|%s\n", alumno.cedula, alumno.nombre, alumno.edad, alumno.correo);
+  fprintf(archivo, "%d|%s|%d|%s\n", alumno.cedula, alumno.nombre, alumno.edad, alumno.correo);
 
   // Cerrar el archivo
   fclose(archivo);
@@ -68,12 +68,12 @@ void listarEstudiantes()
     int cedula; char nombre[50]; int edad; char correo[50];
 
     // Separar la línea en campos usando '|' como delimitador
-    sscanf(linea, "%[^|]|%[^|]|%[^|]|%[^\n]", cedula, nombre, edad, correo);
+    sscanf(linea, "%d|%[^|]|%d|%[^\n]", &cedula, nombre, &edad, correo);
 
     // Mostrar la información del estudiante
-    printf("Cédula: %s\n", cedula);
+    printf("Cédula: %d\n", cedula);
     printf("Nombre: %s\n", nombre);
-    printf("Edad: %s\n", edad);
+    printf("Edad: %d\n", edad);
     printf("Correo: %s\n", correo);
     printf("---------------------------\n");
   }
