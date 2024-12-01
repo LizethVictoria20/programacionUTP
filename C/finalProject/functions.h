@@ -22,6 +22,7 @@ void listarEstudiantes();
 void asignarMateriaEstudiante();
 void eliminarAsignacionEstudiante();
 void listarAsignaturaEstudiante();
+void listarMateriaProfesor();
 
 void menuAdministrador();
 void menuDocente();

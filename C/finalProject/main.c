@@ -162,7 +162,7 @@ void listarAsignaturas()
   char linea[200];
 
 
-  archivo = fopen("/archivos/asignaturas.txt", "r");
+  archivo = fopen("archivos/asignaturas.txt", "r");
   if (archivo == NULL)
   {
     printf("No se pudo abrir el archivo 'asignaturas.txt' o no existen asignaturas registradas.\n");
@@ -190,7 +190,87 @@ void listarAsignaturas()
 }
 void asignarMateriaProfesor()
 {
-  printf("Función para asignar materia al profesor.\n");
+    char codigoMateria[10], cedulaProfesor[15];
+    FILE *archivoMaterias, *archivoProfesores, *archivoAsignaciones;
+    char linea[200];
+    int materiaEncontrada = 0, profesorEncontrado = 0;
+
+    // Solicitar el código de la materia
+    printf("\n=== Asignar Materia a Profesor ===\n");
+    printf("Ingrese el código de la materia: ");
+    scanf("%s", codigoMateria);
+
+    // Verificar que la materia exista
+    archivoMaterias = fopen("archivos/asignaturas.txt", "r");
+    if (archivoMaterias == NULL)
+    {
+        printf("Error: No se pudo abrir el archivo 'asignaturas.txt'. Asegúrese de que el archivo exista.\n");
+        return;
+    }
+
+    while (fgets(linea, sizeof(linea), archivoMaterias) != NULL)
+    {
+        char codigo[10], nombre[50];
+        int creditos;
+        sscanf(linea, "%[^|]|%[^|]|%d|%*s", codigo, nombre, &creditos);
+        if (strcmp(codigo, codigoMateria) == 0)
+        {
+            materiaEncontrada = 1;
+            printf("Materia encontrada: %s - %s (%d créditos)\n", codigo, nombre, creditos);
+            break;
+        }
+    }
+    fclose(archivoMaterias);
+
+    if (!materiaEncontrada)
+    {
+        printf("Error: La materia con código '%s' no existe.\n", codigoMateria);
+        return;
+    }
+
+    // Solicitar la cédula del profesor
+    printf("Ingrese la cédula del profesor: ");
+    scanf("%s", cedulaProfesor);
+
+    // Verificar que el profesor exista
+    archivoProfesores = fopen("archivos/profesores.txt", "r");
+    if (archivoProfesores == NULL)
+    {
+        printf("Error: No se pudo abrir el archivo 'profesores.txt'. Asegúrese de que el archivo exista.\n");
+        return;
+    }
+
+    while (fgets(linea, sizeof(linea), archivoProfesores) != NULL)
+    {
+        char cedula[15], nombre[50];
+        sscanf(linea, "%[^|]|%[^|]|%*s|%*s", cedula, nombre);
+        if (strcmp(cedula, cedulaProfesor) == 0)
+        {
+            profesorEncontrado = 1;
+            printf("Profesor encontrado: %s - %s\n", cedula, nombre);
+            break;
+        }
+    }
+    fclose(archivoProfesores);
+
+    if (!profesorEncontrado)
+    {
+        printf("Error: El profesor con cédula '%s' no existe.\n", cedulaProfesor);
+        return;
+    }
+
+    // Guardar la asignación en el archivo
+    archivoAsignaciones = fopen("archivos/asignaciones.txt", "a+");
+    if (archivoAsignaciones == NULL)
+    {
+        perror("Error al abrir o crear el archivo 'asignaciones.txt'");
+        return;
+    }
+
+    fprintf(archivoAsignaciones, "%s|%s\n", codigoMateria, cedulaProfesor);
+    fclose(archivoAsignaciones);
+
+    printf("Asignación guardada exitosamente: Materia '%s' asignada al Profesor '%s'.\n", codigoMateria, cedulaProfesor);
 }
 void eliminarAsignacionProfesor()
 {
@@ -227,4 +307,88 @@ void eliminarAsignacionEstudiante()
 void listarAsignaturaEstudiante()
 {
   printf("Función para listar asignaturas y sus estudiantes.\n");
+}
+
+void listarMateriaProfesor()
+{
+    FILE *archivoMaterias, *archivoProfesores, *archivoAsignaciones;
+    char lineaAsignacion[100], lineaMateria[200], lineaProfesor[200];
+    char codigoMateria[10], cedulaProfesor[15];
+    int encontrado;
+
+    archivoAsignaciones = fopen("archivos/asignaciones.txt", "r");
+    if (archivoAsignaciones == NULL)
+    {
+        printf("Error: No se pudo abrir el archivo 'asignaciones.txt'. Asegúrese de que existan asignaciones.\n");
+        return;
+    }
+
+    printf("\n=== Lista de Materias Asignadas a Profesores ===\n");
+
+    while (fgets(lineaAsignacion, sizeof(lineaAsignacion), archivoAsignaciones) != NULL)
+    {
+        sscanf(lineaAsignacion, "%[^|]|%[^\n]", codigoMateria, cedulaProfesor);
+
+        archivoMaterias = fopen("archivos/asignaturas.txt", "r");
+        if (archivoMaterias == NULL)
+        {
+            printf("Error: No se pudo abrir el archivo 'asignaturas.txt'.\n");
+            fclose(archivoAsignaciones);
+            return;
+        }
+
+        encontrado = 0;
+        char nombreMateria[50];
+        while (fgets(lineaMateria, sizeof(lineaMateria), archivoMaterias) != NULL)
+        {
+            char codigo[10], nombre[50];
+            sscanf(lineaMateria, "%[^|]|%[^|]|%*d|%*s", codigo, nombre);
+            if (strcmp(codigo, codigoMateria) == 0)
+            {
+                strcpy(nombreMateria, nombre);
+                encontrado = 1;
+                break;
+            }
+        }
+        fclose(archivoMaterias);
+
+        if (!encontrado)
+        {
+            printf("Error: Materia con código '%s' no encontrada.\n", codigoMateria);
+            continue;
+        }
+
+        archivoProfesores = fopen("archivos/profesores.txt", "r");
+        if (archivoProfesores == NULL)
+        {
+            printf("Error: No se pudo abrir el archivo 'profesores.txt'.\n");
+            fclose(archivoAsignaciones);
+            return;
+        }
+
+        encontrado = 0;
+        char nombreProfesor[50];
+        while (fgets(lineaProfesor, sizeof(lineaProfesor), archivoProfesores) != NULL)
+        {
+            char cedula[15], nombre[50];
+            sscanf(lineaProfesor, "%[^|]|%[^|]|%*s|%*s", cedula, nombre);
+            if (strcmp(cedula, cedulaProfesor) == 0)
+            {
+                strcpy(nombreProfesor, nombre);
+                encontrado = 1;
+                break;
+            }
+        }
+        fclose(archivoProfesores);
+
+        if (!encontrado)
+        {
+            printf("Error: Profesor con cédula '%s' no encontrado.\n", cedulaProfesor);
+            continue;
+        }
+
+        printf("Materia: %s | Profesor: %s\n", nombreMateria, nombreProfesor);
+    }
+
+    fclose(archivoAsignaciones);
 }

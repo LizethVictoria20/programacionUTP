@@ -50,7 +50,8 @@ void menuAdministrador()
     printf("5. Asignar materia al estudiante\n");
     printf("6. Listar profesores\n");
     printf("7. Listar asignaturas\n");
-    printf("8. Volver\n");
+    printf("8. Listar materia/profesor\n");
+    printf("9. Volver\n");
     printf("Seleccione una opción: ");
     scanf("%d", &opcion);
 
@@ -78,7 +79,10 @@ void menuAdministrador()
       listarAsignaturas();
       break;
     case 8:
-      printf("Volviendo al menú principal...\n");
+      listarMateriaProfesor();
+      break;
+    case 9:
+      menus();
       break;
     default:
       printf("Opción no válida. Intente de nuevo.\n");
