@@ -2,44 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "functions.h"
-
-// Estructura para Estudiante
-typedef struct
-{
-  char cedula[15];
-  char nombre[50];
-  int edad;
-  char correo[50];
-} Estudiante;
-
-// Estructura para Docente
-typedef struct
-{
-  char cedula[15];
-  char nombre[50];
-  char especialidad[50];
-  char correo[50];
-} Docente;
-
-// Estructura para Materia
-typedef struct
-{
-  char codigo[10];
-  char nombre[50];
-  int creditos;
-  char docenteCedula[15];
-} Asignatura;
-
-// Estructura para Nota
-typedef struct
-{
-  char estudianteCedula[15];
-  char materiaCodigo[10];
-  float nota;
-} Nota;
+#include <locale.h>
 
 int main()
 {
+  setlocale(LC_ALL, "es_ES.UTF-8");
   menus();
 }
 
@@ -279,22 +246,6 @@ void eliminarAsignacionProfesor()
 void listarAsignaturaProfesor()
 {
   printf("Función para listar asignatura y su profesor.\n");
-}
-void crearPerfilEstudiante()
-{
-  printf("Función para crear perfil de estudiante.\n");
-}
-void editarEstudiante()
-{
-  printf("Función para editar perfil de estudiante.\n");
-}
-void eliminarEstudiante()
-{
-  printf("Función para eliminar estudiante.\n");
-}
-void listarEstudiantes()
-{
-  printf("Función para listar estudiantes.\n");
 }
 void asignarMateriaEstudiante()
 {
