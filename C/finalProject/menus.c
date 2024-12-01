@@ -45,13 +45,14 @@ void menuAdministrador()
     printf("\nMenú Administrador\n");
     printf("1. Crear perfil del profesor\n");
     printf("2. Crear perfil de la asignatura\n");
-    printf("3. Asignar materia al profesor\n");
-    printf("4. Crear perfil del estudiante\n");
+    printf("3. Crear perfil del estudiante\n");
+    printf("4. Asignar materia al profesor\n");
     printf("5. Asignar materia al estudiante\n");
     printf("6. Listar profesores\n");
     printf("7. Listar asignaturas\n");
-    printf("8. Listar materia/profesor\n");
-    printf("9. Volver\n");
+    printf("8. Listar estudiantes\n");
+    printf("9. Listar materia/profesor\n");
+    printf("10. Volver\n");
     printf("Seleccione una opción: ");
     scanf("%d", &opcion);
 
@@ -64,10 +65,10 @@ void menuAdministrador()
       crearAsignatura();
       break;
     case 3:
-      asignarMateriaProfesor();
+      crearPerfilEstudiante();
       break;
     case 4:
-      crearPerfilEstudiante();
+      asignarMateriaProfesor();
       break;
     case 5:
       asignarMateriaEstudiante();
@@ -82,6 +83,9 @@ void menuAdministrador()
       listarMateriaProfesor();
       break;
     case 9:
+      listarEstudiantes();
+      break;
+    case 10:
       menus();
       break;
     default:
