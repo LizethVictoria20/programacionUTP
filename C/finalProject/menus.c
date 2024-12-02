@@ -112,7 +112,7 @@ void menuDocente()
     switch (opcion)
     {
     case 1:
-      printf("Función para crear actividades.\n");
+      crearActividades();
       break;
     case 2:
       printf("Función para crear notas.\n");

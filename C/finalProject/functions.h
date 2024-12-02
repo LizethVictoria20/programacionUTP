@@ -62,5 +62,6 @@ void listarMateriaProfesor();
 void menuAdministrador();
 void menuDocente();
 void menuEstudiante();
-
+void crearActividades();
+void limpiarBuffer();
 #endif // MENUS_H
