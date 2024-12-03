@@ -80,10 +80,10 @@ void menuAdministrador()
       listarAsignaturas();
       break;
     case 8:
-      listarMateriaProfesor();
+      listarEstudiantes();
       break;
     case 9:
-      listarEstudiantes();
+      listarMateriaProfesor();
       break;
     case 10:
       menus();
@@ -104,8 +104,9 @@ void menuDocente()
     printf("1. Crear actividades y porcentajes\n");
     printf("2. Crear notas para actividades\n");
     printf("3. Listar estudiantes\n");
-    printf("4. Mostrar notas de todos los estudiantes\n");
-    printf("5. Volver\n");
+    printf("4. Agregar nota a estudiante\n");
+    printf("5. Mostrar notas de todos los estudiantes\n");
+    printf("6. Volver\n");
     printf("Seleccione una opción: ");
     scanf("%d", &opcion);
 
@@ -121,9 +122,12 @@ void menuDocente()
       listarEstudiantes();
       break;
     case 4:
-      printf("Función para mostrar notas de todos los estudiantes.\n");
+      printf("Agregar nota a estudiante.\n");
       break;
     case 5:
+      printf("Volviendo al menú principal...\n");
+      break;
+    case 6:
       printf("Volviendo al menú principal...\n");
       break;
     default:

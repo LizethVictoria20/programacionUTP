@@ -51,8 +51,6 @@ void asignarMateriaProfesor();
 void eliminarAsignacionProfesor();
 void listarAsignaturaProfesor();
 void crearPerfilEstudiante();
-void editarEstudiante();
-void eliminarEstudiante();
 void listarEstudiantes();
 void asignarMateriaEstudiante();
 void eliminarAsignacionEstudiante();
