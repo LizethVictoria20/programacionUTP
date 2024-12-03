@@ -64,4 +64,6 @@ void menuDocente();
 void menuEstudiante();
 void crearActividades();
 void limpiarBuffer();
+void agregarNotaActividad(const char *nombreArchivo);
+
 #endif // MENUS_H

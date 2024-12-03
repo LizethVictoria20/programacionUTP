@@ -60,3 +60,69 @@ void crearActividades()
 
     fclose(archivo);
 }
+
+#define MAX_LINEA 256
+
+void agregarNotaActividad(const char *nombreArchivo) {
+    FILE *archivo;
+    char lineas[100][MAX_LINEA];
+    int cantidadLineas = 0;
+    int seleccion;
+    float nota;
+
+    archivo = fopen(nombreArchivo, "r");
+    if (archivo == NULL) {
+        printf("El archivo %s no existe o no se puede abrir.\n", nombreArchivo);
+        return;
+    }
+
+    while (fgets(lineas[cantidadLineas], MAX_LINEA, archivo) != NULL) {
+        lineas[cantidadLineas][strcspn(lineas[cantidadLineas], "\n")] = '\0';
+        cantidadLineas++;
+    }
+    fclose(archivo);
+
+    if (cantidadLineas == 0) {
+        printf("El archivo está vacío. Por favor, agrega actividades primero.\n");
+        return;
+    }
+
+    printf("Actividades disponibles:\n");
+    for (int i = 0; i < cantidadLineas; i++) {
+        printf("%d. %s\n", i + 1, lineas[i]);
+    }
+
+    printf("Selecciona el número de la actividad a la que deseas agregar una nota: ");
+    scanf("%d", &seleccion);
+
+    if (seleccion < 1 || seleccion > cantidadLineas) {
+        printf("Selección inválida. Por favor, selecciona un número válido.\n");
+        return;
+    }
+
+    printf("Ingresa una nota entre 0 y 5 (pueden ser decimales): ");
+    scanf("%f", &nota);
+
+    if (nota < 0 || nota > 5) {
+        printf("Nota inválida. Debe estar entre 0 y 5.\n");
+        return;
+    }
+
+    char nuevaLinea[MAX_LINEA];
+    snprintf(nuevaLinea, MAX_LINEA, "%s - Nota: %.1f", lineas[seleccion - 1], nota);
+    strncpy(lineas[seleccion - 1], nuevaLinea, MAX_LINEA);
+
+    archivo = fopen(nombreArchivo, "w");
+    if (archivo == NULL) {
+        printf("No se puede abrir el archivo %s para escritura.\n", nombreArchivo);
+        return;
+    }
+
+    for (int i = 0; i < cantidadLineas; i++) {
+        fprintf(archivo, "%s\n", lineas[i]);
+    }
+    fclose(archivo);
+
+    printf("Se ha agregado la nota %.1f a la actividad: %s\n", nota, lineas[seleccion - 1]);
+}
+

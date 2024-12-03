@@ -115,7 +115,7 @@ void menuDocente()
       crearActividades();
       break;
     case 2:
-      printf("Función para crear notas.\n");
+      agregarNotaActividad("archivos/actividades.txt");
       break;
     case 3:
       listarEstudiantes();
