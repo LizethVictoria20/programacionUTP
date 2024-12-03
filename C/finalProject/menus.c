@@ -102,11 +102,9 @@ void menuDocente()
   {
     printf("\nMenú Docente\n");
     printf("1. Crear actividades y porcentajes\n");
-    printf("2. Crear notas para actividades\n");
-    printf("3. Listar estudiantes\n");
-    printf("4. Agregar nota a estudiante\n");
-    printf("5. Mostrar notas de todos los estudiantes\n");
-    printf("6. Volver\n");
+    printf("2. Agregar nota a estudiante\n");
+    printf("3. Mostrar notas de todos los estudiantes\n");
+    printf("4. Volver\n");
     printf("Seleccione una opción: ");
     scanf("%d", &opcion);
 
@@ -116,18 +114,12 @@ void menuDocente()
       crearActividades();
       break;
     case 2:
-      agregarNotaActividad("archivos/actividades.txt");
+      agregarNotaEstudiante();
       break;
     case 3:
-      listarEstudiantes();
+      listarNotasEstudiantes();
       break;
     case 4:
-      printf("Agregar nota a estudiante.\n");
-      break;
-    case 5:
-      printf("Volviendo al menú principal...\n");
-      break;
-    case 6:
       printf("Volviendo al menú principal...\n");
       break;
     default:

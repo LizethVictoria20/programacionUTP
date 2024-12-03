@@ -1,0 +1,2 @@
+Estudiante: 1050493049|Lizeth Victoria|23|liz@gmail.com | Actividad: 45|test3|50 | Nota: 4,0
+Estudiante: 123|ferffr|26|eftgt | Actividad: 45|test3|50 | Nota: 2,0
