@@ -60,6 +60,7 @@ void limpiarBuffer();
 void agregarNotaActividad(const char *nombreArchivo);
 void agregarNotaEstudiante();
 void listarNotasEstudiantes();
-void mostrarNotasPorMateria();
+void mostrarNotasEstudiantes();
+void mostrarNotasMateria();
 int login(const char *archivoUsuarios);
 #endif // MENUS_H

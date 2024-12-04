@@ -2,50 +2,63 @@
 #include <string.h>
 #include "functions.h"
 
-int login(const char *archivoUsuarios) {
-    char usuario[50], password[50], rol[20];
-    char usuarioIngresado[50], passwordIngresado[50];
-    int autenticado = 0;
+int login(const char *archivoUsuarios)
+{
+  char usuario[50], password[50], rol[20];
+  char usuarioIngresado[50], passwordIngresado[50];
+  int autenticado = 0;
 
-    FILE *archivo = fopen(archivoUsuarios, "r");
-    if (!archivo) {
-        printf("Error al abrir el archivo.\n");
-        return 0;
-    }
-
-    printf("Usuario: ");
-    scanf("%s", usuarioIngresado);
-    printf("Contraseña: ");
-    scanf("%s", passwordIngresado);
-
-    while (fscanf(archivo, "%s %s %s", usuario, password, rol) != EOF) {
-        if (strcmp(usuario, usuarioIngresado) == 0 && strcmp(password, passwordIngresado) == 0) {
-            autenticado = 1;
-            printf("\nInicio de sesión exitoso como %s (%s).\n", usuario, rol);
-            fclose(archivo);
-
-            if (strcmp(rol, "administrador") == 0) {
-                menuAdministrador();
-            } else if (strcmp(rol, "estudiante") == 0) {
-                menuEstudiante();
-            } else if (strcmp(rol, "docente") == 0) {
-                menuDocente();
-            } else {
-                printf("Rol no reconocido.\n");
-            }
-            return 1;
-        }
-    }
-
-    fclose(archivo);
-    if (!autenticado) {
-        printf("\nCredenciales incorrectas.\n");
-    }
-
+  FILE *archivo = fopen(archivoUsuarios, "r");
+  if (!archivo)
+  {
+    printf("Error al abrir el archivo.\n");
     return 0;
+  }
+
+  printf("Usuario: ");
+  scanf("%s", usuarioIngresado);
+  printf("Contraseña: ");
+  scanf("%s", passwordIngresado);
+
+  while (fscanf(archivo, "%s %s %s", usuario, password, rol) != EOF)
+  {
+    if (strcmp(usuario, usuarioIngresado) == 0 && strcmp(password, passwordIngresado) == 0)
+    {
+      autenticado = 1;
+      printf("\nInicio de sesión exitoso como %s (%s).\n", usuario, rol);
+      fclose(archivo);
+
+      if (strcmp(rol, "administrador") == 0)
+      {
+        menuAdministrador();
+      }
+      else if (strcmp(rol, "estudiante") == 0)
+      {
+        menuEstudiante();
+      }
+      else if (strcmp(rol, "docente") == 0)
+      {
+        menuDocente();
+      }
+      else
+      {
+        printf("Rol no reconocido.\n");
+      }
+      return 1;
+    }
+  }
+
+  fclose(archivo);
+  if (!autenticado)
+  {
+    printf("\nCredenciales incorrectas.\n");
+  }
+
+  return 0;
 }
-void menus() {
-   int opcion;
+void menus()
+{
+  int opcion;
 
   do
   {
@@ -75,8 +88,6 @@ void menus() {
       printf("Opción no válida. Intente de nuevo.\n");
     }
   } while (opcion != 4);
-
-
 }
 
 void menuAdministrador()
@@ -187,13 +198,10 @@ void menuEstudiante()
     switch (opcion)
     {
     case 1:
-      listarNotasEstudiantes();
+      mostrarNotasEstudiantes();
       break;
     case 2:
-      mostrarNotasPorMateria();
-      break;
-    case 3:
-      printf("Volviendo al menú principal...\n");
+      mostrarNotasMateria();
       break;
     default:
       printf("Opción no válida. Intente de nuevo.\n");
