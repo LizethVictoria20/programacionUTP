@@ -65,4 +65,5 @@ void limpiarBuffer();
 void agregarNotaActividad(const char *nombreArchivo);
 void agregarNotaEstudiante();
 void listarNotasEstudiantes();
+void mostrarNotasPorMateria();
 #endif // MENUS_H

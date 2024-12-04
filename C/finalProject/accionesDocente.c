@@ -87,6 +87,7 @@ void agregarNotaActividad(const char *nombreArchivo) {
         return;
     }
 
+    printf("\n");
     printf("Actividades disponibles:\n");
     for (int i = 0; i < cantidadLineas; i++) {
         printf("%d. %s\n", i + 1, lineas[i]);
@@ -178,6 +179,7 @@ void agregarNotaEstudiante() {
     for (int i = 0; i < cantidadActividades; i++) {
         printf("%d. %s\n", i + 1, actividades[i]);
     }
+    printf("\n");
     printf("Selecciona el número de la actividad: ");
     scanf("%d", &seleccionActividad);
 

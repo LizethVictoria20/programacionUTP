@@ -120,7 +120,7 @@ void menuDocente()
       listarNotasEstudiantes();
       break;
     case 4:
-      printf("Volviendo al menú principal...\n");
+      menus();
       break;
     default:
       printf("Opción no válida. Intente de nuevo.\n");
@@ -144,10 +144,10 @@ void menuEstudiante()
     switch (opcion)
     {
     case 1:
-      printf("Función para mostrar todas las notas.\n");
+      listarNotasEstudiantes();
       break;
     case 2:
-      printf("Función para mostrar notas específicas.\n");
+      mostrarNotasPorMateria();
       break;
     case 3:
       printf("Volviendo al menú principal...\n");
