@@ -6,8 +6,15 @@
 
 int main()
 {
-  setlocale(LC_ALL, "es_ES.UTF-8");
-  menus();
+  const char *archivoUsuarios = "archivos/accesos.txt";
+
+  printf("*** Sistema de Login ***\n");
+
+  if (login(archivoUsuarios)) {
+      printf("\nSesión cerrada.\n");
+  } else {
+      printf("\nNo se pudo iniciar sesión.\n");
+  }
 }
 
 

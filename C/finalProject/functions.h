@@ -40,15 +40,10 @@ typedef struct
 // Declaración de funciones
 void menus();
 void crearPerfilProfesor();
-void editarProfesor();
-void eliminarProfesor();
 void listarProfesores();
 void crearAsignatura();
-void editarAsignatura();
-void eliminarAsignatura();
 void listarAsignaturas();
 void asignarMateriaProfesor();
-void eliminarAsignacionProfesor();
 void listarAsignaturaProfesor();
 void crearPerfilEstudiante();
 void listarEstudiantes();
@@ -66,4 +61,5 @@ void agregarNotaActividad(const char *nombreArchivo);
 void agregarNotaEstudiante();
 void listarNotasEstudiantes();
 void mostrarNotasPorMateria();
+int login(const char *archivoUsuarios);
 #endif // MENUS_H

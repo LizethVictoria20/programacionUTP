@@ -1,0 +1,3 @@
+admin admin123 administrador
+est estudiante123 estudiante
+doc docente123 docente
