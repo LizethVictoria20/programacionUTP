@@ -140,8 +140,7 @@ void menuAdministrador()
       listarMateriaProfesor();
       break;
     case 10:
-      menus();
-      break;
+      return;
     default:
       printf("Opción no válida. Intente de nuevo.\n");
     }
@@ -174,8 +173,7 @@ void menuDocente()
       listarNotasEstudiantes();
       break;
     case 4:
-      menus();
-      break;
+      return;
     default:
       printf("Opción no válida. Intente de nuevo.\n");
     }
@@ -203,6 +201,8 @@ void menuEstudiante()
     case 2:
       mostrarNotasMateria();
       break;
+    case 3:
+      return;
     default:
       printf("Opción no válida. Intente de nuevo.\n");
     }
