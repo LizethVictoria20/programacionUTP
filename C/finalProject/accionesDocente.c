@@ -37,20 +37,17 @@ void crearActividades()
         scanf("%d", &porcentaje);
         limpiarBuffer();
 
-        // Verificar que el porcentaje no exceda el límite permitido
         if (sumaPorcentajes + porcentaje > 100)
         {
             printf("Error: El porcentaje total no puede exceder el 100%%. Quedan %d%% disponibles.\n", 100 - sumaPorcentajes);
             continue;
         }
 
-        // Guardar la actividad y el porcentaje en el archivo
         fprintf(archivo, "%s|%s|%d\n", codigoMateria, actividad, porcentaje);
         sumaPorcentajes += porcentaje;
 
         printf("Actividad '%s' con %d%% registrada exitosamente. Total acumulado: %d%%.\n", actividad, porcentaje, sumaPorcentajes);
 
-        // Si se alcanza el 100%, salir del bucle
         if (sumaPorcentajes == 100)
         {
             printf("Todas las actividades han sido asignadas correctamente.\n");
@@ -136,14 +133,12 @@ void agregarNotaEstudiante() {
     int seleccionActividad, seleccionEstudiante;
     float nota;
 
-    // Abrir el archivo de actividades
     archivoActividades = fopen("archivos/actividades.txt", "r");
     if (archivoActividades == NULL) {
         printf("El archivo actividad.txt no existe o no se puede abrir.\n");
         return;
     }
 
-    // Leer las actividades
     while (fgets(actividades[cantidadActividades], MAX_LINEA, archivoActividades) != NULL) {
         actividades[cantidadActividades][strcspn(actividades[cantidadActividades], "\n")] = '\0'; // Eliminar salto de línea
         cantidadActividades++;
@@ -155,14 +150,12 @@ void agregarNotaEstudiante() {
         return;
     }
 
-    // Abrir el archivo de estudiantes
     archivoEstudiantes = fopen("archivos/estudiantes.txt", "r");
     if (archivoEstudiantes == NULL) {
         printf("El archivo estudiante.txt no existe o no se puede abrir.\n");
         return;
     }
 
-    // Leer los estudiantes
     while (fgets(estudiantes[cantidadEstudiantes], MAX_LINEA, archivoEstudiantes) != NULL) {
         estudiantes[cantidadEstudiantes][strcspn(estudiantes[cantidadEstudiantes], "\n")] = '\0'; // Eliminar salto de línea
         cantidadEstudiantes++;
@@ -174,7 +167,6 @@ void agregarNotaEstudiante() {
         return;
     }
 
-    // Mostrar las actividades y solicitar la selección
     printf("Actividades disponibles:\n");
     for (int i = 0; i < cantidadActividades; i++) {
         printf("%d. %s\n", i + 1, actividades[i]);
@@ -188,7 +180,6 @@ void agregarNotaEstudiante() {
         return;
     }
 
-    // Mostrar los estudiantes y solicitar la selección
     printf("Estudiantes disponibles:\n");
     for (int i = 0; i < cantidadEstudiantes; i++) {
         printf("%d. %s\n", i + 1, estudiantes[i]);
@@ -201,7 +192,6 @@ void agregarNotaEstudiante() {
         return;
     }
 
-    // Solicitar la nota
     printf("Ingresa una nota entre 0 y 5 (pueden ser decimales): ");
     scanf("%f", &nota);
 
@@ -210,7 +200,6 @@ void agregarNotaEstudiante() {
         return;
     }
 
-    // Abrir el archivo de notas para agregar la información
     archivoNotas = fopen("archivos/notasestudiantes.txt", "a");
     if (archivoNotas == NULL) {
         printf("No se puede abrir el archivo notasestudiantes.txt para escritura.\n");
@@ -229,18 +218,16 @@ void listarNotasEstudiantes() {
     FILE *archivoNotas;
     char linea[MAX_LINEA];
 
-    // Abrir el archivo de notas en modo lectura
     archivoNotas = fopen("archivos/notasestudiantes.txt", "r");
     if (archivoNotas == NULL) {
         printf("El archivo notasestudiantes.txt no existe o no se puede abrir.\n");
         return;
     }
 
-    // Leer y mostrar el contenido del archivo
     printf("Listado de notas de estudiantes:\n");
     printf("---------------------------------\n");
     while (fgets(linea, MAX_LINEA, archivoNotas) != NULL) {
-        printf("%s", linea); // Imprime cada línea del archivo
+        printf("%s", linea); 
     }
     fclose(archivoNotas);
     printf("---------------------------------\n");

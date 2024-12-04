@@ -131,7 +131,6 @@ void listarAsignaturas()
     printf("---------------------------\n");
   }
 
-  // Cerrar el archivo
   fclose(archivo);
 }
 
@@ -142,12 +141,10 @@ void asignarMateriaProfesor()
     char linea[200];
     int materiaEncontrada = 0, profesorEncontrado = 0;
 
-    // Solicitar el código de la materia
     printf("\n=== Asignar Materia a Profesor ===\n");
     printf("Ingrese el código de la materia: ");
     scanf("%s", codigoMateria);
 
-    // Verificar que la materia exista
     archivoMaterias = fopen("archivos/asignaturas.txt", "r");
     if (archivoMaterias == NULL)
     {
@@ -175,11 +172,9 @@ void asignarMateriaProfesor()
         return;
     }
 
-    // Solicitar la cédula del profesor
     printf("Ingrese la cédula del profesor: ");
     scanf("%s", cedulaProfesor);
 
-    // Verificar que el profesor exista
     archivoProfesores = fopen("archivos/profesores.txt", "r");
     if (archivoProfesores == NULL)
     {
@@ -206,7 +201,6 @@ void asignarMateriaProfesor()
         return;
     }
 
-    // Guardar la asignación en el archivo
     archivoAsignaciones = fopen("archivos/asignaciones.txt", "a+");
     if (archivoAsignaciones == NULL)
     {
@@ -309,21 +303,19 @@ void crearPerfilEstudiante()
   Estudiante alumno;
   FILE *archivo;
 
-  // Solicitar los datos del estudiante
   printf("\n=== Crear Perfil del Estudiante ===\n");
   printf("Ingrese la cédula: ");
   scanf("%d", &alumno.cedula);
   printf("Ingrese el nombre: ");
-  getchar(); // Para consumir el salto de línea anterior
+  getchar(); 
   fgets(alumno.nombre, 50, stdin);
-  alumno.nombre[strcspn(alumno.nombre, "\n")] = '\0'; // Eliminar el salto de línea
+  alumno.nombre[strcspn(alumno.nombre, "\n")] = '\0';
   printf("Ingrese la edad: ");
   scanf("%d", &alumno.edad);
-  getchar(); // Consumir el salto de línea restante
+  getchar(); 
   printf("Ingrese el correo: ");
   scanf("%s", alumno.correo);
 
-  // Abrir el archivo en modo "a" (adición) para agregar nuevos estudiantes
   archivo = fopen("archivos/estudiantes.txt", "a");
   if (archivo == NULL)
   {
@@ -331,10 +323,8 @@ void crearPerfilEstudiante()
     return;
   }
 
-  // Escribir los datos del estudiante en el archivo
   fprintf(archivo, "%d|%s|%d|%s\n", alumno.cedula, alumno.nombre, alumno.edad, alumno.correo);
 
-  // Cerrar el archivo
   fclose(archivo);
 
   printf("Perfil del estudiante guardado exitosamente.\n");
@@ -343,9 +333,8 @@ void crearPerfilEstudiante()
 void listarEstudiantes()
 {
   FILE *archivo;
-  char linea[200]; // Línea temporal para leer cada registro
+  char linea[200]; 
 
-  // Abrir el archivo en modo lectura
   archivo = fopen("archivos/estudiantes.txt", "r");
   if (archivo == NULL)
   {
@@ -355,15 +344,12 @@ void listarEstudiantes()
 
   printf("\n=== Lista de Estudiantes ===\n");
 
-  // Leer línea por línea el archivo
   while (fgets(linea, sizeof(linea), archivo) != NULL)
   {
     int cedula; char nombre[50]; int edad; char correo[50];
 
-    // Separar la línea en campos usando '|' como delimitador
     sscanf(linea, "%d|%[^|]|%d|%[^\n]", &cedula, nombre, &edad, correo);
 
-    // Mostrar la información del estudiante
     printf("Cédula: %d\n", cedula);
     printf("Nombre: %s\n", nombre);
     printf("Edad: %d\n", edad);
@@ -371,6 +357,5 @@ void listarEstudiantes()
     printf("---------------------------\n");
   }
 
-  // Cerrar el archivo
   fclose(archivo);
 }

@@ -1,7 +1,6 @@
 #ifndef MENUS_H
 #define MENUS_H
 
-// Estructura para Estudiante
 typedef struct
 {
   int cedula;
@@ -10,7 +9,6 @@ typedef struct
   char correo[50];
 } Estudiante;
 
-// Estructura para Docente
 typedef struct
 {
   int cedula;
@@ -19,7 +17,6 @@ typedef struct
   char correo[50];
 } Docente;
 
-// Estructura para Materia
 typedef struct
 {
   char codigo[15];
@@ -28,7 +25,6 @@ typedef struct
   char docenteCedula[15];
 } Asignatura;
 
-// Estructura para Nota
 typedef struct
 {
   int estudianteCedula;
@@ -37,7 +33,6 @@ typedef struct
 } Nota;
 
 // Declaraciones de las funciones de los menús
-// Declaración de funciones
 void menus();
 void crearPerfilProfesor();
 void listarProfesores();
