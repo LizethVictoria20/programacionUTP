@@ -7,6 +7,7 @@ Partes incluidas en este archivo:
     C -> constructores flexibles (valor por defecto y **detalles)
     D -> métodos con self: esta_disponible(), prestar(), devolver()
     E -> @classmethod Prestamo.registrar_hoy y @staticmethod Usuario.es_codigo_valido
+    F -> ComprobantePrestamo inmutable (__slots__ + propiedades sin setter)
 
 
 
@@ -27,8 +28,7 @@ class Libro:
             autor (str): nombre del autor.
             isbn (str): código único del libro.
             ejemplares_totales (int): cantidad total de copias.
-            **detalles: datos opcionales con nombre (editorial, anio, categoria...).
-                        [Parte C] Se agrupan en un diccionario.
+            **detalles: datos opcionales con nombre (editorial, año, categoria...).
         """
         self.titulo = titulo
         self.autor = autor
@@ -100,9 +100,7 @@ class Prestamo:
         self.usuario = usuario
         self.fecha_prestamo = fecha_prestamo
         self.fecha_devolucion_esperada = fecha_devolucion_esperada
-        # [Extra 2] Un préstamo nuevo siempre empieza sin devolver.
-        self.devuelto = False
-
+        
     
     # ---------------- [Parte E] Constructor alternativo ----------------
     @classmethod
@@ -164,7 +162,6 @@ class Biblioteca:
             if (not prestamo.devuelto
                     and prestamo.libro.isbn == isbn
                     and prestamo.usuario.codigo_estudiantil == codigo):
-                prestamo.cerrar()          # Extra 2
                 prestamo.libro.devolver()  # Parte D
                 return prestamo
         raise ValueError("No hay un préstamo abierto con esos datos")
@@ -174,6 +171,47 @@ class Biblioteca:
         if solo_abiertos:
             return [p for p in self.prestamos if not p.devuelto]
         return list(self.prestamos)
+
+
+# ---------------- [Parte F] Comprobante inmutable ----------------
+class ComprobantePrestamo:
+    """
+    Comprobante que se entrega al registrar un préstamo.
+
+    Es inmutable: usa __slots__ (no permite agregar atributos nuevos)
+    y expone sus datos solo mediante propiedades sin setter (no se
+    pueden reasignar después de creado).
+    """
+
+    __slots__ = ("_libro_titulo", "_usuario_nombre",
+                 "_fecha_prestamo", "_fecha_devolucion_esperada")
+
+    def __init__(self, prestamo):
+        """Copia los datos relevantes del Prestamo en el momento de emitirse."""
+        self._libro_titulo = prestamo.libro.titulo
+        self._usuario_nombre = prestamo.usuario.nombre
+        self._fecha_prestamo = prestamo.fecha_prestamo
+        self._fecha_devolucion_esperada = prestamo.fecha_devolucion_esperada
+
+    @property
+    def libro_titulo(self):
+        """Getter sin setter: el título queda fijo desde la creación."""
+        return self._libro_titulo
+
+    @property
+    def usuario_nombre(self):
+        """Getter sin setter: el nombre del usuario queda fijo desde la creación."""
+        return self._usuario_nombre
+
+    @property
+    def fecha_prestamo(self):
+        """Getter sin setter: la fecha de préstamo queda fija desde la creación."""
+        return self._fecha_prestamo
+
+    @property
+    def fecha_devolucion_esperada(self):
+        """Getter sin setter: la fecha de devolución queda fija desde la creación."""
+        return self._fecha_devolucion_esperada
 
 
 # ----------------------------------------------------------------------
@@ -189,29 +227,34 @@ if __name__ == "__main__":
     except ValueError as error:
         print("Error esperado:", error)
 
-    # Parte C
+    # # Parte C
     u1 = Usuario("Camila Ruiz", "1093812345")
     libro_2 = Libro("Clean Code", "Robert C. Martin", "978-0132350884", 2,
                     editorial="Prentice Hall", anio=2008)
     print(u1.tipo_usuario)    # estudiante
     print(libro_2.detalles)   # {'editorial': 'Prentice Hall', 'anio': 2008}
 
-    # Parte D
+    # # Parte D
     libro_1.prestar()
     print(libro_1.disponibles)  # 1
     libro_1.devolver()
     print(libro_1.disponibles)  # 2
 
-    # Parte E
+    # # Parte E
     prestamo_1 = Prestamo.registrar_hoy(libro_1, u1)
     print(prestamo_1.fecha_devolucion_esperada)
     print(Usuario.es_codigo_valido("1093812345"))  # True
     print(Usuario.es_codigo_valido("abc"))         # False
 
-    # [Extra 2] Estado del préstamo
-    print(prestamo_1.devuelto)         # False
-    print(prestamo_1.esta_vencido())   # False (vence en 14 días)
-    prestamo_1.cerrar()
-    print(prestamo_1.devuelto)         # True
+    # # Parte F
+    comprobante = ComprobantePrestamo(prestamo_1)
+    print(comprobante.libro_titulo, comprobante.usuario_nombre)
+    try:
+        comprobante.libro_titulo = "Otro libro"
+    except AttributeError as error:
+        print("Error esperado (sin setter):", error)
+    try:
+        comprobante.nota = "urgente"
+    except AttributeError as error:
+        print("Error esperado (__slots__):", error)
 
-    
