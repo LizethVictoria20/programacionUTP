@@ -6,9 +6,10 @@ Partes incluidas en este archivo:
     B -> Material: clase base abstracta (antes Libro) con dias_prestamo abstracto
     C -> LibroFisico y RecursoDigital: subclases que usan super()
     D -> __str__ y __repr__ en Material, LibroFisico, RecursoDigital, Usuario y Prestamo
+    E -> LibroHibrido: herencia múltiple (LibroFisico + RecursoDigital)
+    F -> Prestamo.registrar_hoy le pregunta el plazo al material
 
-(La Parte A es la tabla escrita y la Parte F, la integración con el préstamo,
- queda pendiente para Lizeth.)
+(La Parte A es la tabla escrita, está en el documento de respuestas.)
 """
 
 from abc import ABC, abstractmethod
@@ -144,6 +145,24 @@ class RecursoDigital(Material):
 
 
 # ----------------------------------------------------------------------
+# [Parte E] Herencia múltiple
+# ----------------------------------------------------------------------
+class LibroHibrido(LibroFisico, RecursoDigital):
+    """Título que llega en papel y en digital a la vez."""
+
+    def dias_prestamo(self):
+        """Se aplica el plazo más corto de los dos padres (7 días)."""
+        return min(LibroFisico.dias_prestamo(self),
+                   RecursoDigital.dias_prestamo(self))
+
+    def __repr__(self):
+        return (f"{type(self).__name__}(titulo={self.titulo!r}, "
+                f"autor={self.autor!r}, isbn={self.isbn!r}, "
+                f"ejemplares_totales={self.ejemplares_totales!r}, "
+                f"ubicacion={self.ubicacion!r}, formato={self.formato!r})")
+
+
+# ----------------------------------------------------------------------
 # Clases de la Práctica 2 (sin cambios, salvo __str__ y __repr__ de la Parte D)
 # ----------------------------------------------------------------------
 class Usuario:
@@ -179,12 +198,13 @@ class Prestamo:
         self.fecha_devolucion_esperada = fecha_devolucion_esperada
 
     @classmethod
-    def registrar_hoy(cls, libro, usuario, dias_prestamo=14):
+    def registrar_hoy(cls, libro, usuario, dias_prestamo=None):
         """Crea un Prestamo con la fecha de hoy.
-        (Parte F pendiente: hacer que el plazo lo decida el material.)"""
+        [Parte F] Si no se indica plazo, se lo pregunta al material."""
         hoy = date.today()
-        fecha_limite = hoy + timedelta(days=dias_prestamo)
-        return cls(libro, usuario, hoy, fecha_limite)
+        if dias_prestamo is None:
+            dias_prestamo = libro.dias_prestamo()
+        return cls(libro, usuario, hoy, hoy + timedelta(days=dias_prestamo))
 
     # [Parte D] "Por tu cuenta"
     def __str__(self):
@@ -259,3 +279,26 @@ if __name__ == "__main__":
     prestamo = Prestamo.registrar_hoy(fisico, u1)
     print(prestamo)
     print(repr(prestamo))
+
+    # Parte E
+    print("\n--- Parte E ---")
+    h = LibroHibrido("Python 3 OOP", "Dusty Phillips", "978-1789615852", 3,
+                     ubicacion="C-03", formato="PDF")
+    print(h)
+    print(h.dias_prestamo())
+    print([c.__name__ for c in LibroHibrido.__mro__])
+    print(repr(h))
+
+    # Parte F
+    print("\n--- Parte F ---")
+    catalogo = [fisico, digital, h]
+    for material in catalogo:
+        material.prestar()
+        prestamo = Prestamo.registrar_hoy(material, u1)
+        print(prestamo)
+
+        comprobante = ComprobantePrestamo(prestamo)
+        print(comprobante.libro_titulo)
+
+    # Plazo forzado
+    print(Prestamo.registrar_hoy(h, u1, dias_prestamo=30))
