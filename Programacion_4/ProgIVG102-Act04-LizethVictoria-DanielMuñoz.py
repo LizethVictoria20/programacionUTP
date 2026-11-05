@@ -12,12 +12,16 @@ Partes incluidas en este archivo:
     D -> Interfaz Notificador (ABC) y dos implementaciones
          (NotificadorConsola y NotificadorCorreo)
 
+    E -> Biblioteca: catálogo, préstamos y un canal de notificación recibido de afuera
+    F -> Duck typing y Protocol (ServicioSMS de una librería externa, CanalNotificacion)
+
 (La Parte A son las relaciones y el diagrama de clases, están en el documento de
- respuestas. La clase Biblioteca y el Protocol quedan para las Partes E y F.)
+ respuestas.)
 """
 
 from abc import ABC, abstractmethod
 from datetime import date, timedelta
+from typing import Protocol, runtime_checkable
 
 
 # ----------------------------------------------------------------------
@@ -357,6 +361,75 @@ class NotificadorCorreo(Notificador):
 
 
 # ----------------------------------------------------------------------
+# [Parte E] La clase Biblioteca
+# ----------------------------------------------------------------------
+class Biblioteca:
+    """Agrega materiales, compone sus préstamos y usa un canal que recibe de afuera."""
+
+    def __init__(self, nombre, canal):
+        self.nombre = nombre
+        self._catalogo = {}        
+        self._prestamos = []       
+        self._canal = canal      
+
+    def agregar_material(self, material):
+        self._catalogo[material.isbn] = material
+
+    def prestamos_activos_de(self, usuario):
+        return [p for p in self._prestamos
+                if p.usuario is usuario and p.activo]
+
+    def prestar(self, isbn, usuario):
+        if isbn not in self._catalogo:
+            raise ValueError(f"ISBN {isbn} no esta en el catalogo")
+        if len(self.prestamos_activos_de(usuario)) >= usuario.limite_prestamos():
+            raise ValueError(f"{usuario.nombre} alcanzo su limite")
+        material = self._catalogo[isbn]
+        material.prestar()
+        prestamo = Prestamo.registrar_hoy(material, usuario)
+        self._prestamos.append(prestamo)
+        self._canal.enviar(usuario.nombre,
+                           f"Prestamo de {material.titulo}: devolver el "
+                           f"{prestamo.fecha_devolucion_esperada}")
+        return prestamo
+
+    def devolver(self, prestamo, fecha_real=None):
+        """Registra la devolución, libera el ejemplar y cobra la multa si hay retraso.
+        Devuelve el valor de la multa."""
+        if fecha_real is None:
+            fecha_real = date.today()
+        prestamo.registrar_devolucion(fecha_real)
+        prestamo.libro.devolver()
+        multa = prestamo.usuario.calcular_multa(prestamo.dias_retraso(fecha_real))
+        if multa > 0:
+            self._canal.enviar(prestamo.usuario.nombre,
+                               f"Multa por devolver {prestamo.libro.titulo} "
+                               f"con retraso: ${multa}")
+        return multa
+
+
+# ----------------------------------------------------------------------
+# [Parte F] Duck typing y Protocol
+# ----------------------------------------------------------------------
+class ServicioSMS:
+    """Simula la clase de una librería externa: no se puede modificar
+    ni hacer que herede de Notificador."""
+
+    def __init__(self):
+        self.enviados = []
+
+    def enviar(self, destinatario, mensaje):
+        self.enviados.append((destinatario, mensaje[:160]))
+
+
+@runtime_checkable
+class CanalNotificacion(Protocol):
+    """Describe la forma que debe tener un canal, sin exigir herencia."""
+
+    def enviar(self, destinatario, mensaje): ...
+
+
+# ----------------------------------------------------------------------
 # Pruebas rápidas
 # ----------------------------------------------------------------------
 if __name__ == "__main__":
@@ -402,3 +475,41 @@ if __name__ == "__main__":
     correo = NotificadorCorreo()
     correo.enviar("Camila Ruiz", "Prestamo de Clean Code: devolver el 2026-11-16")
     print(correo.bandeja_salida)
+
+    # Parte E
+    print("--- Parte E ---")
+    fisico = LibroFisico("Clean Code", "Robert C. Martin",
+                         "978-0132350884", 2, ubicacion="B-12")
+    digital = RecursoDigital("Fluent Python", "Luciano Ramalho",
+                             "978-1492056355", 5, formato="EPUB")
+    bib = Biblioteca("Biblioteca Jorge Roa Martinez", NotificadorConsola())
+    bib.agregar_material(fisico)
+    bib.agregar_material(digital)
+
+    p1 = bib.prestar(fisico.isbn, usuarios[0])    
+    p2 = bib.prestar(digital.isbn, usuarios[2])
+    try:
+        bib.prestar(fisico.isbn, usuarios[2])  
+    except ValueError as error:
+        print("Error esperado:", error)
+
+    tarde = p1.fecha_devolucion_esperada + timedelta(days=5)
+    print(bib.devolver(p1, tarde))              
+    print(bib.devolver(p2))       
+
+    # Cambio de canal sin tocar Biblioteca
+    correo = NotificadorCorreo()
+    bib2 = Biblioteca("Otra biblioteca", correo)
+    bib2.agregar_material(fisico)
+    bib2.prestar(fisico.isbn, usuarios[1])
+    print(correo.bandeja_salida)
+
+    # Parte F
+    print("--- Parte F ---")
+    sms = ServicioSMS()
+    print(isinstance(sms, Notificador))           
+    print(isinstance(sms, CanalNotificacion))    
+    bib3 = Biblioteca("Otra", sms)         
+    bib3.agregar_material(digital)
+    bib3.prestar(digital.isbn, usuarios[0])
+    print(sms.enviados)
